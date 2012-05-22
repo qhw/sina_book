@@ -59,7 +59,7 @@ def search():
 	res = urllib2.urlopen(req).read()
 
 	base_url = "http://vip.books/sina.com.cn"
-	soup = BeautifulSoup(res)
+	soup = BeautifulSoup(unicode(res, 'GBK'))
 	div = soup.findAll('div', {"class":"content"})[0]
 	li = div.findAll('li')
 	for li1 in li:
@@ -89,7 +89,7 @@ def book():
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; rv:8.0.1) Gecko/20110101 Firefox/8.0.1')
 	res = urllib2.urlopen(req).read()
 
-	soup = BeautifulSoup(res)
+	soup = BeautifulSoup(unicode(res,'GBK'))
 	
 	parts = soup.findAll('div', {"class":"blk_03"})
 	for part in parts:
@@ -100,20 +100,19 @@ def book():
 			url =  base_url + _part["href"]
 			print url
 			neirong(url)
-		#print utf8(part_title)
-		#print utf8(part_introduction)
-		#print part_title
+		print utf8(part_title)
+		print utf8(part_introduction)
 		#break
 
 def neirong(url):
 	req = urllib2.Request(url)
 	res = urllib2.urlopen(req).read()
-	soup = BeautifulSoup(res)
+	soup = BeautifulSoup(unicode(res, 'GBK'))
 	contents = soup.find('div', {"id":"contTxt"}).contents
 	time = soup.findAll('em')[1].contents[0]
 	print '更新时间', time
 	for content in contents: 
 		if len(content.contents):
-			print utf8(content.contents[0])
-#search()
+			print content.contents[0]
+search()
 book()
